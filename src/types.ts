@@ -1,15 +1,11 @@
 export interface Product {
   id: string;
-  title: string;
+  name: string;
   description: string;
-  price: number;
-  originalPrice?: number;
-  category: 'ebook' | 'template';
-  coverImage: string;
-  previewImages?: string[];
-  downloadUrl: string;
-  isFeatured: boolean;
-  tags: string[];
+  price_cents: number;
+  image_url: string;
+  isFeatured?: boolean;
+  category?: string;
 }
 
 export interface CartItem {

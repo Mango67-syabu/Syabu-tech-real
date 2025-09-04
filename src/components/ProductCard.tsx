@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingCart, Eye } from 'lucide-react';
-import { Product } from '../types';
-import { useStore } from '../context/StoreContext';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ShoppingCart, Eye } from "lucide-react";
+import { Product } from "../types";
+import { useStore } from "../context/StoreContext";
 
 interface ProductCardProps {
   product: Product;
@@ -11,12 +11,13 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToCart } = useStore();
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(price);
+  const formatPrice = (price_cents: number) => {
+    const priceInRupiah = price_cents;
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(priceInRupiah);
   };
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -28,29 +29,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
       <div className="relative">
         <img
-          src={product.coverImage}
-          alt={product.title}
+          src={product.image_url}
+          alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
         />
-        <div className="absolute top-3 left-3">
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold text-white ${
-            product.category === 'ebook' ? 'bg-blue-600' : 'bg-purple-600'
-          }`}>
-            {product.category === 'ebook' ? 'E-book' : 'Template'}
-          </span>
-        </div>
-        {product.originalPrice && (
-          <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-            -{Math.round((1 - product.price / product.originalPrice) * 100)}%
+        {product.category && (
+          <div className="absolute top-3 left-3">
+            <span className="px-2 py-1 rounded-full text-xs font-semibold text-white bg-blue-600">
+              {product.category}
+            </span>
           </div>
         )}
       </div>
 
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-          {product.title}
+          {product.name}
         </h3>
-        
+
         <p className="text-gray-600 text-sm mb-4 line-clamp-3">
           {product.description}
         </p>
@@ -58,13 +54,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-gray-900">
-              {formatPrice(product.price)}
+              {formatPrice(product.price_cents)}
             </span>
-            {product.originalPrice && (
-              <span className="text-sm text-gray-500 line-through">
-                {formatPrice(product.originalPrice)}
-              </span>
-            )}
           </div>
         </div>
 
